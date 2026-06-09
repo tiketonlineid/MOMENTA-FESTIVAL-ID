@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOMENTA FEST - Form Pemesanan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f5f7fb;color:#111;padding-bottom:120px}
+.container{max-width:900px;margin:auto}
+.banner img{width:100%;display:block;border-bottom-left-radius:28px;border-bottom-right-radius:28px}
+.header{padding:25px}
+.header h1{font-size:32px;font-weight:800}
+.header p{color:#666;margin-top:6px}
+.card{
+background:#fff;border-radius:24px;padding:22px;margin:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.06);
+border:1px solid #ececec;
+}
+.title{font-size:20px;font-weight:700;margin-bottom:18px;color:#00b7ff}
+label{display:block;font-weight:600;margin-top:14px}
+input,select,textarea{
+width:100%;padding:14px;margin-top:8px;border-radius:14px;
+border:1px solid #dfe5ec;font-size:15px
+}
+textarea{min-height:100px;resize:vertical}
+.summary-row{display:flex;justify-content:space-between;margin:10px 0}
+.total{font-size:26px;font-weight:800;color:#00b7ff}
+.check{display:flex;gap:10px;margin-top:14px;align-items:flex-start}
+.check input{width:auto;margin-top:3px}
+.bottom{
+position:fixed;left:0;right:0;bottom:0;background:#fff;
+padding:15px;box-shadow:0 -5px 20px rgba(0,0,0,.08)
+}
+.btn{
+width:100%;max-width:900px;margin:auto;display:block;
+padding:16px;border:none;border-radius:16px;
+background:linear-gradient(135deg,#00c8ff,#0099ff);
+color:#fff;font-size:16px;font-weight:700;cursor:pointer
+}
+#loading{
+display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);
+color:#fff;z-index:9999;justify-content:center;align-items:center;flex-direction:column
+}
+.spinner{
+width:70px;height:70px;border:6px solid rgba(255,255,255,.2);
+border-top:6px solid #00c8ff;border-radius:50%;
+animation:spin 1s linear infinite
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+#status{margin-top:20px;font-size:20px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="banner">
+<img src="banner-event.png" alt="Banner">
+</div>
+
+<div class="header">
+<h1>Form Pemesanan Tiket</h1>
+<p>Lengkapi data berikut sebelum melanjutkan ke pembayaran.</p>
+</div>
+
+<div class="card">
+<div class="title">Ringkasan Pesanan</div>
+<div class="summary-row"><span>Jenis Tiket</span><strong id="jenisTiket">EXTRA SALE FESTIVAL</strong></div>
+<div class="summary-row"><span>Jumlah Tiket</span><strong id="jumlahTiket">1</strong></div>
+<div class="summary-row total"><span>Total</span><span id="totalBayar">Rp150.000</span></div>
+</div>
+
+<div class="card">
+<div class="title">Data Pemesan</div>
+
+<label>Nama Lengkap *</label>
+<input id="nama" required>
+
+<label>Jenis Identitas *</label>
+<select id="identitas" required>
+<option value="">Pilih Identitas</option>
+<option>KTP</option>
+<option>SIM</option>
+<option>Paspor</option>
+<option>Kartu Pelajar</option>
+</select>
+
+<label>Nomor Identitas *</label>
+<input id="nomorId" required>
+
+<label>E-mail *</label>
+<input id="email" type="email" required>
+
+<label>No. WhatsApp *</label>
+<input id="wa" required>
+
+<label>Alamat / Tempat Tinggal *</label>
+<textarea id="alamat"></textarea>
+</div>
+
+<div class="card">
+<div class="title">Persetujuan</div>
+
+<div class="check">
+<input type="checkbox" id="setuju1">
+<label for="setuju1">Data yang saya isi adalah benar.</label>
+</div>
+
+<div class="check">
+<input type="checkbox" id="setuju2">
+<label for="setuju2">Saya menyetujui syarat dan ketentuan acara.</label>
+</div>
+</div>
+
+</div>
+
+<div class="bottom">
+<button class="btn" id="lanjut">LANJUT KE PEMBAYARAN</button>
+</div>
+
+<div id="loading">
+<div class="spinner"></div>
+<div id="status">Memvalidasi Data...</div>
+</div>
+
+<script>
+document.getElementById('lanjut').onclick=function(){
+
+const wajib=['nama','identitas','nomorId','email','wa','alamat'];
+
+for(let id of wajib){
+ if(!document.getElementById(id).value){
+  alert('Mohon lengkapi semua data.');
+  return;
+ }
+}
+
+if(!setuju1.checked || !setuju2.checked){
+ alert('Centang seluruh persetujuan.');
+ return;
+}
+
+localStorage.setItem('nama',nama.value);
+localStorage.setItem('identitas',identitas.value);
+localStorage.setItem('nomorIdentitas',nomorId.value);
+localStorage.setItem('email',email.value);
+localStorage.setItem('wa',wa.value);
+localStorage.setItem('alamat',alamat.value);
+
+loading.style.display='flex';
+
+const teks=[
+'Memvalidasi Data...',
+'Mempersiapkan Pembayaran...',
+'Menghubungkan Sistem...',
+'Mengalihkan Ke Halaman Pembayaran...'
+];
+
+let i=0;
+const interval=setInterval(()=>{
+ i++;
+ if(i<teks.length){
+  status.innerText=teks[i];
+ }
+},1200);
+
+setTimeout(()=>{
+ clearInterval(interval);
+ window.location.href='qris.html';
+},5000);
+}
+</script>
+
+</body>
+</html>
