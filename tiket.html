@@ -1,451 +1,318 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pilih Tiket Event</title>
+<title>Tiket Premium - MOMENTA FEST</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-background:#f5faff;
-padding:20px;
+font-family:Poppins,sans-serif;
+background:#f4f6f8;
+color:#111827;
 padding-bottom:120px;
 }
-
-.banner{
-width:100%;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:20px;
+.container{
+max-width:1200px;
+margin:auto;
+padding:16px;
 }
-
+.banner{
+overflow:hidden;
+border-radius:24px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+margin-bottom:24px;
+}
 .banner img{
 width:100%;
 display:block;
+object-fit:cover;
+max-height:450px;
 }
-
-.section-title{
-font-size:26px;
-font-weight:bold;
-margin-bottom:20px;
+.header{
+margin-bottom:24px;
 }
-
+.header h1{
+font-size:clamp(28px,5vw,48px);
+font-weight:800;
+}
+.header p{
+color:#6b7280;
+margin-top:8px;
+}
 .ticket-card{
-position:relative;
-background:white;
-border:2px solid #d8ecff;
-border-radius:25px;
-overflow:hidden;
-padding:22px;
+background:rgba(255,255,255,.95);
+backdrop-filter:blur(10px);
+border:1px solid #e5e7eb;
+border-radius:24px;
+padding:24px;
 margin-bottom:20px;
-box-shadow:0 8px 25px rgba(0,0,0,.06);
+box-shadow:0 10px 25px rgba(0,0,0,.06);
+transition:.3s;
 }
-
-.ticket-card::before,
-.ticket-card::after{
-content:"";
-position:absolute;
-width:36px;
-height:36px;
-background:#f5faff;
-border-radius:50%;
-top:50%;
-transform:translateY(-50%);
+.ticket-card:hover{
+transform:translateY(-4px);
 }
-
-.ticket-card::before{left:-18px;}
-.ticket-card::after{right:-18px;}
-
-.sale{
-display:inline-block;
-background:#dff1ff;
-color:#0095ff;
-padding:8px 14px;
-border-radius:12px;
-font-size:13px;
-font-weight:bold;
+.badges{
+display:flex;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:14px;
 }
-
-.stock{
-position:absolute;
-top:20px;
-right:20px;
-background:#fff3d9;
-color:#ff7b00;
+.badge{
 padding:8px 14px;
 border-radius:999px;
 font-size:12px;
-font-weight:bold;
+font-weight:700;
 }
-
+.sale{background:#dcfce7;color:#166534}
+.stock{background:#fef3c7;color:#92400e}
+.sold{background:#fee2e2;color:#991b1b}
 .ticket-name{
-font-size:22px;
-font-weight:bold;
-margin-top:15px;
+font-size:24px;
+font-weight:700;
 margin-bottom:12px;
 }
-
 .ticket-info{
+line-height:1.9;
+color:#4b5563;
 font-size:14px;
-line-height:1.8;
-color:#444;
 }
-
 .divider{
-border-top:2px dashed #d8ecff;
-margin:18px 0;
+border-top:1px dashed #d1d5db;
+margin:20px 0;
 }
-
-.ticket-bottom{
+.bottom{
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:20px;
+flex-wrap:wrap;
 }
-
 .price{
-font-size:28px;
-font-weight:bold;
-color:#00aaff;
+font-size:32px;
+font-weight:800;
+color:#1e40af;
 }
-
-.select-btn,.qty-btn,.buy-btn{
-background:#00aaff;
-color:white;
+.btn{
+background:#1e3a8a;
+color:#fff;
 border:none;
+padding:14px 22px;
+border-radius:14px;
 cursor:pointer;
+font-weight:700;
 }
-
-.select-btn{
-padding:12px 18px;
-border-radius:12px;
-font-weight:bold;
-}
-
-.qty-box{
+.qty{
 display:none;
 align-items:center;
-gap:10px;
+gap:12px;
 }
-
-.qty-btn{
-width:38px;
-height:38px;
+.qty button{
+width:42px;
+height:42px;
+border:none;
+background:#1e3a8a;
+color:#fff;
+border-radius:12px;
+cursor:pointer;
 font-size:20px;
-border-radius:10px;
 }
-
-.qty-number{
-font-size:20px;
-font-weight:bold;
+.qty span{
 min-width:50px;
 text-align:center;
+font-weight:700;
+font-size:20px;
 }
-
 .checkout{
 position:fixed;
 left:0;
+right:0;
 bottom:0;
-width:100%;
-background:white;
-padding:15px;
+background:#fff;
+border-top:1px solid #e5e7eb;
+padding:16px;
 box-shadow:0 -5px 20px rgba(0,0,0,.08);
 }
-
 .checkout-wrap{
-max-width:1000px;
+max-width:1200px;
 margin:auto;
 display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
 .total{
-font-size:22px;
-font-weight:bold;
-color:#00aaff;
+font-size:28px;
+font-weight:800;
+color:#1e40af;
 }
-
-.buy-btn{
+.buy{
+background:#1e3a8a;
+color:white;
+border:none;
 padding:14px 24px;
 border-radius:14px;
-font-weight:bold;
+font-weight:700;
+cursor:pointer;
 }
-
-.buy-btn:disabled{
-background:#c5dceb;
+.buy:disabled{
+opacity:.5;
 cursor:not-allowed;
 }
-
 .loader{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(255,255,255,.9);
+background:rgba(0,0,0,.7);
+backdrop-filter:blur(8px);
 justify-content:center;
 align-items:center;
-font-size:28px;
-font-weight:bold;
-color:#00aaff;
+z-index:99999;
 }
-
-/* ===== FOOTER ===== */
-
-.footer{
-    background:#fff;
-    padding:40px 20px;
-    text-align:center;
-    margin-top:40px;
+.spinner{
+width:70px;
+height:70px;
+border:6px solid rgba(255,255,255,.2);
+border-top:6px solid white;
+border-radius:50%;
+animation:spin 1s linear infinite;
 }
-
-.footer-logo{
-    width:180px;
-    margin-bottom:20px;
-}
-
-.footer p{
-    margin:10px 0;
-    color:#00aaff;
-    font-weight:bold;
-}
-
-.footer-copy{
-    margin-top:20px;
-    padding-top:20px;
-    border-top:1px solid #e5e7eb;
-    color:#888;
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){
+.bottom{flex-direction:column;align-items:flex-start}
+.checkout-wrap{gap:12px}
+.total{font-size:22px}
 }
 </style>
 </head>
-
 <body>
 
+<div class="container">
+
 <div class="banner">
-<img src="banner-event.png" alt="Banner">
+<img src="banner-event.png" alt="Banner Event">
 </div>
 
-<div class="section-title">🎫 ADDITIONAL TIKET</div>
+<div class="header">
+<h1>🎫 Pilih Tiket Event</h1>
+<p>Pilih kategori tiket yang tersedia untuk MOMENTA FESTIVAL.</p>
+</div>
 
 <div class="ticket-card">
-<div class="sale">ON SALE</div>
-<div class="stock">🔥 TERSISA 15 TIKET</div>
-
+<div class="badges">
+<div class="badge sale">ON SALE</div>
+<div class="badge stock">🔥 Tersisa 15 Tiket</div>
+</div>
 <div class="ticket-name">EXTRA SALE FESTIVAL</div>
-
 <div class="ticket-info">
-• Jam masuk dibebaskan, maksimal masuk sebelum jam 20.00 WIB.
-<br>
-• Tiket ini khusus pembelian 1-10 tiket.
-<br>
-• Jika memesan 2- 10 tiket, data bisa dibedakan atau disamakan dengan data pemesan.<br>
-• Tiket disemua kategori merupakan tiket berdiri (festival semua, tidak ada VIP).
-<br>
-• Anak di bawah 7 tahun dan dibawah 120cm tidak dikenakan biaya tiket tapi harus selalu dalam pengawasan orang tua.
-<br>
-• Promotor tidak bertanggung jawab atas pembelian tiket di luar partner resmi Artatix.<br>
-
-
+Jam masuk dibebaskan. Maksimal masuk sebelum jam 20.00 WIB.<br>
+Tiket berlaku untuk 1 orang.
 </div>
-
 <div class="divider"></div>
-
-<div class="ticket-bottom">
+<div class="bottom">
 <div class="price">Rp150.000</div>
-
-<button class="select-btn" id="singleBtn" onclick="showSingle()">
-Pilih Tiket
-</button>
-
-<div class="qty-box" id="singleBox">
-<button class="qty-btn" onclick="minusSingle()">-</button>
-<div class="qty-number" id="qtySingle">1</div>
-<button class="qty-btn" onclick="plusSingle()">+</button>
+<button class="btn" id="singleBtn" onclick="showSingle()">Pilih Tiket</button>
+<div class="qty" id="singleBox">
+<button onclick="minusSingle()">−</button>
+<span id="qtySingle">1</span>
+<button onclick="plusSingle()">+</button>
 </div>
 </div>
 </div>
 
 <div class="ticket-card">
-<div class="sale">ON SALE</div>
-<div class="stock">🔥 TERSISA 22 TIKET</div>
-
+<div class="badges">
+<div class="badge sale">ON SALE</div>
+<div class="badge stock">🔥 Tersisa 22 Tiket</div>
+</div>
 <div class="ticket-name">BLOOM EXTRA FESTIVAL (BER EMPAT)</div>
-
 <div class="ticket-info">
-• Jam masuk dibebaskan, maksimal masuk sebelum jam 20.00 WIB.<br>
-• Tiket bundling untuk pembelian 4 tiket dalam 1 kali transaksi.<br>
-• Harga lebih murah dibandingkan harga tiket satuan bloom sale 2.<br>
-• Data pemesan bisa dibedakan atau disamakan di setiap transaksi.<br>
-• Tiket disemua kategori merupakan tiket berdiri (festival semua, tidak ada VIP)<br>
-• Anak di bawah 7 tahun dan dibawah 120cm tidak dikenakan biaya tiket tapi harus selalu dalam pengawasan orang tua.<br>
-• Ibu hamil diperbolehkan tapi tidak disarankan memasuki area venue<br>
-• Promotor tidak bertanggung jawab atas pembelian tiket di luar partner resmi Artatix<br>
-
+1 Bundle = 4 Tiket. Harga lebih hemat dibanding tiket satuan.
 </div>
-
 <div class="divider"></div>
-
-<div class="ticket-bottom">
+<div class="bottom">
 <div class="price">Rp540.000</div>
-
-<button class="select-btn" id="bundleBtn" onclick="showBundle4()">
-Pilih Bundle
-</button>
-
-<div class="qty-box" id="bundleBox">
-<button class="qty-btn" onclick="minusBundle4()">-</button>
-<div class="qty-number" id="qtyBundle4">4</div>
-<button class="qty-btn" onclick="plusBundle4()">+</button>
+<button class="btn" id="bundleBtn" onclick="showBundle()">Pilih Bundle</button>
+<div class="qty" id="bundleBox">
+<button onclick="minusBundle()">−</button>
+<span id="qtyBundle">4</span>
+<button onclick="plusBundle()">+</button>
 </div>
 </div>
 </div>
 
-<div class="ticket-card">
-<div class="sale" style="background:#ffe1e1;color:#ff0000;">SOLD OUT</div>
-
-<div class="ticket-name">EXTRA BLOOM FESTIVAL (BERLIMA)</div>
-
-<div class="ticket-info">
-• 1 Bundle = 5 Tiket<br>
-• Harga Bundle Rp550.000<br>
-• Tiket telah habis terjual
-</div>
-
-<div class="divider"></div>
-
-<div class="ticket-bottom">
-<div class="price">Rp550.000</div>
-<button class="select-btn" disabled style="background:#cccccc;color:#666666;">
-SOLD OUT
-</button>
-</div>
 </div>
 
 <div class="checkout">
 <div class="checkout-wrap">
 <div class="total" id="total">Rp0</div>
-<button class="buy-btn" id="buyBtn" disabled>BELI TIKET</button>
+<button class="buy" id="buyBtn" disabled>BELI TIKET</button>
 </div>
 </div>
 
-<div class="loader" id="loader">Loading...</div>
+<div class="loader" id="loader">
+<div class="spinner"></div>
+</div>
 
 <script>
-const PRICE_SINGLE = 150000;
-const PRICE_BUNDLE4 = 540000;
+const PRICE_SINGLE=150000;
+const PRICE_BUNDLE=540000;
 
-let qtySingle = 0;
-let qtyBundle4 = 0;
+let qtySingle=0;
+let qtyBundle=0;
 
 function showSingle(){
-document.getElementById('singleBtn').style.display='none';
-document.getElementById('singleBox').style.display='flex';
-if(qtySingle===0){ qtySingle=1; }
-updateTotal();
+singleBtn.style.display='none';
+singleBox.style.display='flex';
+if(qtySingle===0) qtySingle=1;
+update();
 }
 
-function plusSingle(){ qtySingle++; updateTotal(); }
-
-function minusSingle(){
-if(qtySingle>1){
-qtySingle--;
-updateTotal();
-}
+function showBundle(){
+bundleBtn.style.display='none';
+bundleBox.style.display='flex';
+if(qtyBundle===0) qtyBundle=4;
+update();
 }
 
-function showBundle4(){
-document.getElementById('bundleBtn').style.display='none';
-document.getElementById('bundleBox').style.display='flex';
-if(qtyBundle4===0){ qtyBundle4=4; }
-updateTotal();
+function plusSingle(){qtySingle++;update();}
+function minusSingle(){if(qtySingle>1){qtySingle--;update();}}
+
+function plusBundle(){qtyBundle+=4;update();}
+function minusBundle(){if(qtyBundle>4){qtyBundle-=4;update();}}
+
+function update(){
+qtySingleEl=document.getElementById('qtySingle');
+qtyBundleEl=document.getElementById('qtyBundle');
+
+qtySingleEl.innerText=qtySingle;
+qtyBundleEl.innerText=qtyBundle;
+
+let total=(qtySingle*PRICE_SINGLE)+((qtyBundle/4)*PRICE_BUNDLE);
+
+document.getElementById('total').innerText='Rp'+total.toLocaleString('id-ID');
+document.getElementById('buyBtn').disabled=total<=0;
 }
 
-function plusBundle4(){
-qtyBundle4 += 4;
-updateTotal();
-}
+document.getElementById('buyBtn').onclick=function(){
+let total=(qtySingle*PRICE_SINGLE)+((qtyBundle/4)*PRICE_BUNDLE);
 
-function minusBundle4(){
-if(qtyBundle4>4){
-qtyBundle4 -= 4;
-updateTotal();
-}
-}
-
-function updateTotal(){
-document.getElementById('qtySingle').innerText = qtySingle;
-document.getElementById('qtyBundle4').innerText = qtyBundle4;
-
-const totalSingle = qtySingle * PRICE_SINGLE;
-const totalBundle = (qtyBundle4/4) * PRICE_BUNDLE4;
-
-const total = totalSingle + totalBundle;
-
-document.getElementById('total').innerText =
-'Rp' + total.toLocaleString('id-ID');
-
-document.getElementById('buyBtn').disabled = total <= 0;
-}
-
-document.getElementById('buyBtn').onclick = function(){
-
-const totalSingle = qtySingle * PRICE_SINGLE;
-const totalBundle = (qtyBundle4/4) * PRICE_BUNDLE4;
-const total = totalSingle + totalBundle;
-
-let jenisTiket = '';
-
-if(qtySingle > 0 && qtyBundle4 === 0){
-    jenisTiket = 'EXTRA SALE FESTIVAL';
-}
-
-else if(qtyBundle4 > 0 && qtySingle === 0){
-    jenisTiket = 'BLOOM EXTRA FESTIVAL (BER EMPAT)';
-}
-
-else if(qtySingle > 0 && qtyBundle4 > 0){
-    jenisTiket = 'COMBINED TICKET';
-}
-
-localStorage.setItem(
-    'totalPembayaran',
-    total
-);
-
-localStorage.setItem(
-    'jenis_tiket',
-    jenisTiket
-);
+localStorage.setItem('totalPembayaran',total);
+localStorage.setItem('qtySingle',qtySingle);
+localStorage.setItem('qtyBundle',qtyBundle);
 
 document.getElementById('loader').style.display='flex';
 
 setTimeout(()=>{
-    window.location.href='from.html';
+window.location.href='from.html';
 },3000);
-
 }
 </script>
-
-<script>
-  // seluruh javascript
-</script>
-
-<footer class="footer">
-    <img src="logo-event.png" class="footer-logo">
-
-    <p>📞 +62 823-7997-7693</p>
-    <p>✉️ cs@Ticketing</p>
-
-    <div class="footer-copy">
-        © 2026 MOMENTAFEST. All Rights Reserved.
-    </div>
-</footer>
 
 </body>
 </html>
