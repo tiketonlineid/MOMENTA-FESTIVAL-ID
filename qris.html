@@ -74,8 +74,9 @@ button:disabled{opacity:.4}
 
 <script>
 document.getElementById('orderId').textContent=localStorage.getItem('orderId')||'VTX-000001';
-document.getElementById('total').textContent='Rp '+Number(localStorage.getItem('totalBayar')||0).toLocaleString('id-ID');
-
+document.getElementById('total').textContent =
+'Rp ' + Number(localStorage.getItem('totalPembayaran') || 0)
+.toLocaleString('id-ID');
 let uploaded=false;
 const file=document.getElementById('file');
 const cek=document.getElementById('cek');
